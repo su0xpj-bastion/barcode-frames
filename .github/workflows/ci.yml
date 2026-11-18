@@ -1,0 +1,15 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: sw_vers && swift --version
+      - run: swift test
+      - run: swift run bf
+      - run: swift run bf faults
+      - run: swift run bf probe
+      - name: CLT-only build path still works
+        run: scripts/build-local.sh check
