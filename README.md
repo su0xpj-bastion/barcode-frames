@@ -25,6 +25,8 @@ Swift, AVFoundation (composition, reader/writer, export), XCTest, SwiftUI,
 CI on GitHub Actions. Follows on from frame-exact, which checks the maths; this repo checks real
 pixels and samples.
 
+[Test plan](TEST_PLAN.md) · [Bugs found](BUGS.md) · [Test strategy](https://github.com/su0xpj-bastion/proof-sheet/blob/main/docs/TEST_STRATEGY.md)
+
 ---
 
 ## Technical detail
