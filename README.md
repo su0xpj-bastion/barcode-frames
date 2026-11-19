@@ -1,5 +1,38 @@
 # barcode-frames
 
+<!-- plain-english:begin -->
+[![ci](https://github.com/su0xpj-bastion/barcode-frames/actions/workflows/ci.yml/badge.svg)](https://github.com/su0xpj-bastion/barcode-frames/actions/workflows/ci.yml)
+
+## In plain English
+
+**What it is.** End-to-end tests for video editing on Apple platforms where every frame wears a
+name tag. The test clip has each frame's number drawn as a barcode, and the audio has a click
+every 10 frames. It goes through a real edit (cuts, 2x speed, half speed) and a real export.
+Then every frame and every audio sample is read back.
+
+**Why it matters.** A dropped or doubled frame, or sound slipping off the picture, is invisible
+in a quick look and obvious to a customer. Picture a stutter in a slow-motion wedding moment.
+This catches it automatically, on every change.
+
+**What I built.**
+- Swift and AVFoundation: generate the clip, build the edit, decode what the player shows and what the exported file contains, and check every frame and every click (to within 2 audio samples).
+- An exporter that keeps a constant frame rate, because the standard export goes variable-rate inside speed changes.
+- A SwiftUI inspector that shows the frame strip, and 6 planted bugs, each proven caught.
+
+**What it found about AVFoundation.**
+- The default track clock (600 ticks per second) can't hold 29.97 exactly.
+- The stock export writes variable frame rate inside retimes.
+- The audio time-pitch algorithm shifts un-retimed audio by 1–2 samples.
+
+**For a tech lead.** Swift, AVFoundation (composition, reader/writer, export), XCTest, SwiftUI,
+CI on GitHub Actions. Follows on from frame-exact, which checks the maths; this repo checks real
+pixels and samples.
+
+---
+
+## Technical detail
+<!-- plain-english:end -->
+
 End-to-end, frame-accurate tests for video editing on Apple platforms, in **Swift + AVFoundation + XCTest**, with a **SwiftUI** inspector.
 
 Every frame of the test clip carries its own frame number as a block barcode (24 bits + CRC-8), and the audio has a click on the first sample of every 10th frame. The clip goes through a real edit: two cuts, a 2x retime and a 50% retime in an `AVMutableComposition`. The tests then decode **what the player renders** and **what the exported file contains**, and read the barcodes back. Each output frame must show exactly the source frame the edit promised, and each click must land within 2 samples (0.04 ms) of its picture.
@@ -78,3 +111,16 @@ All measured on a MacBook (Apple Silicon, macOS 26.6), and reproducible with the
 - 640x360 synthetic content. The barcode survives H.264 at 6 Mb/s; it is not a test of image quality.
 - No XCUITest: SwiftPM can't host a UI test target. The SwiftUI view is a library, tested through its model.
 - Written on a Mac with only Command Line Tools: checks and faults run locally through `scripts/build-local.sh`; `swift test` runs on GitHub Actions macOS runners.
+
+<!-- set:begin -->
+---
+
+**Part of a set.** Six small projects, one idea: test media apps with data that carries its own answer, and prove every test catches the bug it was written for.
+
+- [frame-exact](https://github.com/su0xpj-bastion/frame-exact): timecode and edit maths, to the frame
+- **[barcode-frames](https://github.com/su0xpj-bastion/barcode-frames)**: real video edits checked frame by frame
+- [proof-sheet](https://github.com/su0xpj-bastion/proof-sheet): a photo/video app with all 45 workflows tested
+- [enact-probe](https://github.com/su0xpj-bastion/enact-probe): live AI video, measured the way the viewer feels it
+- [vision-gate](https://github.com/su0xpj-bastion/vision-gate): report cards for on-device AI photo features
+- [timeline-ml](https://github.com/su0xpj-bastion/timeline-ml): beat detection and transcript search
+<!-- set:end -->
