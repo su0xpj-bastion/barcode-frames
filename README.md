@@ -5,26 +5,25 @@
 
 ## In plain English
 
-**What it is.** End-to-end tests for video editing on Apple platforms where every frame wears a
+End-to-end tests for video editing on Apple platforms where every frame wears a
 name tag. The test clip has each frame's number drawn as a barcode, and the audio has a click
 every 10 frames. It goes through a real edit (cuts, 2x speed, half speed) and a real export.
 Then every frame and every audio sample is read back.
 
-**Why it matters.** A dropped or doubled frame, or sound slipping off the picture, is invisible
+A dropped or doubled frame, or sound slipping off the picture, is invisible
 in a quick look and obvious to a customer. Picture a stutter in a slow-motion wedding moment.
 This catches it automatically, on every change.
 
-**What I built.**
 - Swift and AVFoundation: generate the clip, build the edit, decode what the player shows and what the exported file contains, and check every frame and every click (to within 2 audio samples).
 - An exporter that keeps a constant frame rate, because the standard export goes variable-rate inside speed changes.
 - A SwiftUI inspector that shows the frame strip, and 6 planted bugs, each proven caught.
 
-**What it found about AVFoundation.**
+Along the way, the tests turned up:
 - The default track clock (600 ticks per second) can't hold 29.97 exactly.
 - The stock export writes variable frame rate inside retimes.
 - The audio time-pitch algorithm shifts un-retimed audio by 1–2 samples.
 
-**For a tech lead.** Swift, AVFoundation (composition, reader/writer, export), XCTest, SwiftUI,
+Swift, AVFoundation (composition, reader/writer, export), XCTest, SwiftUI,
 CI on GitHub Actions. Follows on from frame-exact, which checks the maths; this repo checks real
 pixels and samples.
 
@@ -115,7 +114,7 @@ All measured on a MacBook (Apple Silicon, macOS 26.6), and reproducible with the
 <!-- set:begin -->
 ---
 
-**Part of a set.** Six small projects, one idea: test media apps with data that carries its own answer, and prove every test catches the bug it was written for.
+Six small projects, one idea: test media apps with data that carries its own answer, and prove every test catches the bug it was written for.
 
 - [frame-exact](https://github.com/su0xpj-bastion/frame-exact): timecode and edit maths, to the frame
 - **[barcode-frames](https://github.com/su0xpj-bastion/barcode-frames)**: real video edits checked frame by frame
