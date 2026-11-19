@@ -3,8 +3,6 @@
 <!-- plain-english:begin -->
 [![ci](https://github.com/su0xpj-bastion/barcode-frames/actions/workflows/ci.yml/badge.svg)](https://github.com/su0xpj-bastion/barcode-frames/actions/workflows/ci.yml)
 
-## In plain English
-
 End-to-end tests for video editing on Apple platforms where every frame wears a
 name tag. The test clip has each frame's number drawn as a barcode, and the audio has a click
 every 10 frames. It goes through a real edit (cuts, 2x speed, half speed) and a real export.
